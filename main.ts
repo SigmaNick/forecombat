@@ -632,7 +632,7 @@ player2 = sprites.create(img`
     ................................
     ................................
     `, SpriteKind.Player)
-boss.ay = 300
+boss.ay = 20
 player1.ay = 300
 player2.ay = 300
 controller.player1.moveSprite(player1, 100, 0)
@@ -697,3 +697,8 @@ let list = [sprites.create(img`
     . . . 2 2 4 4 4 4 4 4 2 2 . . . 
     . . . . . 2 2 2 2 2 2 . . . . . 
     `, SpriteKind.Player)]
+boss.setStayInScreen(true)
+forever(function () {
+    boss.x = randint(30, 32)
+    boss.y += randint(50, 76)
+})
