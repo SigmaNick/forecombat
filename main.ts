@@ -32,24 +32,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function damageCounter (bool: boolean, mySprite: Sprite) {
-    mySprite = sprites.create(img`
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        . . . . . . . . . . . . . . . . 
-        `, SpriteKind.Player)
+	
 }
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.hazardLava0, function (sprite, location) {
     info.changeLifeBy(-1)
@@ -412,7 +395,6 @@ controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
         )
     }
 })
-let mySprite: Sprite = null
 let projectile1: Sprite = null
 let jump = 0
 let player2: Sprite = null
@@ -663,3 +645,4 @@ splitScreen.cameraFollowSprite(splitScreen.Camera.Camera2, player2)
 info.player1.setLife(5)
 info.player2.setLife(5)
 jump = 0
+music.play(music.stringPlayable("- - - - - - - - ", 120), music.PlaybackMode.UntilDone)
