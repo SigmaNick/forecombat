@@ -31,6 +31,13 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     	
     }
 })
+function damageCounter (bool: boolean, mySprite: Sprite) {
+	
+}
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.hazardLava0, function (sprite, location) {
+    info.changeLifeBy(-1)
+    sprite.setPosition(76, 32)
+})
 controller.player2.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Pressed, function () {
     if (jump < 2) {
         jump += 1
