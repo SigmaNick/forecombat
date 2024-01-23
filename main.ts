@@ -32,7 +32,24 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function damageCounter (bool: boolean, mySprite: Sprite) {
-	
+    mySprite = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.Player)
 }
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.hazardLava0, function (sprite, location) {
     info.changeLifeBy(-1)
@@ -395,6 +412,7 @@ controller.player1.onButtonEvent(ControllerButton.A, ControllerButtonEvent.Press
         )
     }
 })
+let mySprite: Sprite = null
 let projectile1: Sprite = null
 let jump = 0
 let player2: Sprite = null
