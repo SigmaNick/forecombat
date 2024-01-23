@@ -32,7 +32,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     }
 })
 function damageCounter (bool: boolean, mySprite: Sprite) {
-	
+    game.gameOver(true)
 }
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.hazardLava0, function (sprite, location) {
     info.changeLifeBy(-1)
