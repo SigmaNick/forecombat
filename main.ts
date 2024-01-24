@@ -221,10 +221,10 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Player, function (sprite, ot
     }
 })
 function damageBoss (sprite: Sprite) {
-    list = [1, 2]
+    list = [2, 1]
     while (bossHealth > 5) {
         if (sprite.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0)) {
-            projectile = list._pickRandom()
+            projectile = list.pop()
             if (projectile == 1) {
                 projectile3 = sprites.createProjectileFromSprite(img`
                     . . . . . . . . . . . . . . . . 
