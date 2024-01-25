@@ -24,7 +24,7 @@ controller.player2.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Press
         `, player2, 75, 0)
 })
 controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
-    if (player1.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0)) {
+    if (player1.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0) || player1.tileKindAt(TileDirection.Bottom, sprites.skillmap.islandTile7)) {
         jumpPlayer1 = 0
     }
     if (jumpPlayer1 < 2) {
@@ -218,7 +218,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Player, function (sprite, ot
     }
 })
 controller.player2.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
-    if (player1.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0)) {
+    if (player2.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0) || player2.tileKindAt(TileDirection.Bottom, sprites.skillmap.islandTile7)) {
         jumpPlayer2 = 0
     }
     if (jumpPlayer2 < 2) {
