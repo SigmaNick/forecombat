@@ -770,8 +770,8 @@ info.player1.setLife(5)
 info.player2.setLife(5)
 bossHealth = 0
 game.onUpdate(function () {
-    if (false && false) {
-    	
+    if (info.player2.life() == 0 && info.player1.life() == 0) {
+        game.gameOver(false)
     }
 })
 forever(function () {
