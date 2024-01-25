@@ -1,3 +1,6 @@
+namespace SpriteKind {
+    export const pro = SpriteKind.create()
+}
 scene.onHitWall(SpriteKind.Player, function (sprite, location) {
     if (sprite.isHittingTile(CollisionDirection.Top)) {
         jumpPlayer2 = 0
@@ -22,6 +25,8 @@ controller.player2.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Press
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, player2, 75, 0)
+    projectile2.setFlag(SpriteFlag.AutoDestroy, false)
+    projectile2.setFlag(SpriteFlag.DestroyOnWall, true)
 })
 controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
     if (player1.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0) || player1.tileKindAt(TileDirection.Bottom, sprites.skillmap.islandTile7)) {
@@ -484,7 +489,7 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.hazardLava1, function (sp
     }
 })
 controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Pressed, function () {
-    projectile1 = sprites.createProjectileFromSprite(img`
+    projectile1 = sprites.create(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -501,7 +506,10 @@ controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Press
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
-        `, player1, 75, 0)
+        `, SpriteKind.pro)
+    projectile1.setPosition(player1.x, player1.y)
+    projectile1.setVelocity(75, 0)
+    projectile2.setFlag(SpriteFlag.DestroyOnWall, true)
 })
 let projectile1: Sprite = null
 let projectile4: Sprite = null
