@@ -205,20 +205,6 @@ controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
         )
     }
 })
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Player, function (sprite, otherSprite) {
-    if (sprite.overlapsWith(boss)) {
-        bossHealth += 1
-        if (info.life() < 4) {
-            damageBoss(boss)
-        }
-    }
-    if (sprite.overlapsWith(boss)) {
-        bossHealth += 1
-        if (info.life() < 4) {
-            damageBoss(boss)
-        }
-    }
-})
 controller.player2.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
     if (player2.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0) || player2.tileKindAt(TileDirection.Bottom, sprites.skillmap.islandTile7)) {
         jumpPlayer2 = 0
@@ -401,76 +387,78 @@ controller.player2.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
 })
 function damageBoss (sprite: Sprite) {
     list = [2, 1]
-    while (bossHealth > 5) {
-        if (sprite.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0)) {
-            projectile = list.pop()
-            if (projectile == 1) {
-                projectile3 = sprites.createProjectileFromSprite(img`
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . b d b . . . . . . 
-                    . . . . . . . b d b c . . . . . 
-                    . . . . b b c 5 5 5 c b b . . . 
-                    . . . . b 5 5 5 1 5 5 5 b . . . 
-                    . . . c c 5 5 5 1 5 5 5 c c . . 
-                    . . b b 5 5 5 1 1 1 5 5 5 b b . 
-                    . . d d 5 1 1 1 1 1 1 1 5 d d . 
-                    . . b b 5 5 5 1 1 1 5 5 5 b b . 
-                    . . . c c 5 5 5 1 5 5 5 c c . . 
-                    . . . . b 5 5 5 1 5 5 5 b . . . 
-                    . . . . b b c 5 5 5 c b b . . . 
-                    . . . . . . c b d b c . . . . . 
-                    . . . . . . . b d b . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    `, projectileBoss, 100, 0)
-                if (sprite.overlapsWith(projectile3)) {
-                    info.changeLifeBy(-2)
-                    sprites.destroy(projectile3, effects.ashes, 500)
+    if (bossHealth > 5) {
+        for (let index = 0; index < 2; index++) {
+            if (sprite.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0)) {
+                projectile = list._pickRandom()
+                if (projectile == 1) {
+                    projectile3 = sprites.createProjectileFromSprite(img`
+                        . . . . . . . . . . . . . . . . 
+                        . . . . . . . . . . . . . . . . 
+                        . . . . . . . b d b . . . . . . 
+                        . . . . . . . b d b c . . . . . 
+                        . . . . b b c 5 5 5 c b b . . . 
+                        . . . . b 5 5 5 1 5 5 5 b . . . 
+                        . . . c c 5 5 5 1 5 5 5 c c . . 
+                        . . b b 5 5 5 1 1 1 5 5 5 b b . 
+                        . . d d 5 1 1 1 1 1 1 1 5 d d . 
+                        . . b b 5 5 5 1 1 1 5 5 5 b b . 
+                        . . . c c 5 5 5 1 5 5 5 c c . . 
+                        . . . . b 5 5 5 1 5 5 5 b . . . 
+                        . . . . b b c 5 5 5 c b b . . . 
+                        . . . . . . c b d b c . . . . . 
+                        . . . . . . . b d b . . . . . . 
+                        . . . . . . . . . . . . . . . . 
+                        `, projectileBoss, 100, 0)
+                    if (sprite.overlapsWith(projectile3)) {
+                        info.changeLifeBy(-2)
+                        sprites.destroy(projectile3, effects.ashes, 500)
+                    }
                 }
-            }
-            if (projectile == 2) {
-                projectile4 = sprites.createProjectileFromSprite(img`
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . 4 4 4 4 4 . . . . . . 
-                    . . . 4 4 4 5 5 5 d 4 4 4 4 . . 
-                    . . 4 d 5 d 5 5 5 d d d 4 4 . . 
-                    . . 4 5 5 1 1 1 d d 5 5 5 4 . . 
-                    . 4 5 5 5 1 1 1 5 1 1 5 5 4 4 . 
-                    . 4 d d 1 1 5 5 5 1 1 5 5 d 4 . 
-                    . 4 5 5 1 1 5 1 1 5 5 d d d 4 . 
-                    . 2 5 5 5 d 1 1 1 5 1 1 5 5 2 . 
-                    . 2 d 5 5 d 1 1 1 5 1 1 5 5 2 . 
-                    . . 2 4 d d 5 5 5 5 d d 5 4 . . 
-                    . . . 2 2 4 d 5 5 d d 4 4 . . . 
-                    . . 2 2 2 2 2 4 4 4 2 2 2 . . . 
-                    . . . 2 2 4 4 4 4 4 4 2 2 . . . 
-                    . . . . . 2 2 2 2 2 2 . . . . . 
-                    `, projectileBoss, 150, 0)
-                if (sprite.overlapsWith(projectile4)) {
-                    info.changeLifeBy(-3)
-                    sprites.destroy(projectile4, effects.ashes, 500)
+                if (projectile == 2) {
+                    projectile4 = sprites.createProjectileFromSprite(img`
+                        . . . . . . . . . . . . . . . . 
+                        . . . . . . . . . . . . . . . . 
+                        . . . . . 4 4 4 4 4 . . . . . . 
+                        . . . 4 4 4 5 5 5 d 4 4 4 4 . . 
+                        . . 4 d 5 d 5 5 5 d d d 4 4 . . 
+                        . . 4 5 5 1 1 1 d d 5 5 5 4 . . 
+                        . 4 5 5 5 1 1 1 5 1 1 5 5 4 4 . 
+                        . 4 d d 1 1 5 5 5 1 1 5 5 d 4 . 
+                        . 4 5 5 1 1 5 1 1 5 5 d d d 4 . 
+                        . 2 5 5 5 d 1 1 1 5 1 1 5 5 2 . 
+                        . 2 d 5 5 d 1 1 1 5 1 1 5 5 2 . 
+                        . . 2 4 d d 5 5 5 5 d d 5 4 . . 
+                        . . . 2 2 4 d 5 5 d d 4 4 . . . 
+                        . . 2 2 2 2 2 4 4 4 2 2 2 . . . 
+                        . . . 2 2 4 4 4 4 4 4 2 2 . . . 
+                        . . . . . 2 2 2 2 2 2 . . . . . 
+                        `, projectileBoss, 150, 0)
+                    if (sprite.overlapsWith(projectile4)) {
+                        info.changeLifeBy(-3)
+                        sprites.destroy(projectile4, effects.ashes, 500)
+                    }
                 }
+            } else {
+                projectileBoss = sprites.createProjectileFromSprite(img`
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . 4 4 . . . . . . . 
+                    . . . . . . 4 5 5 4 . . . . . . 
+                    . . . . . . 2 5 5 2 . . . . . . 
+                    . . . . . . . 2 2 . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    . . . . . . . . . . . . . . . . 
+                    `, projectileBoss, 75, 0)
             }
-        } else {
-            projectileBoss = sprites.createProjectileFromSprite(img`
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . 4 4 . . . . . . . 
-                . . . . . . 4 5 5 4 . . . . . . 
-                . . . . . . 2 5 5 2 . . . . . . 
-                . . . . . . . 2 2 . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                . . . . . . . . . . . . . . . . 
-                `, projectileBoss, 75, 0)
         }
     }
 }
@@ -484,6 +472,12 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.hazardLava1, function (sp
     if (info.player2.life() == 0 && info.player1.life() == 0) {
         game.gameOver(false)
     }
+})
+info.player1.onLifeZero(function () {
+    sprites.destroy(player1, effects.disintegrate, 500)
+})
+info.player2.onLifeZero(function () {
+    sprites.destroy(player2, effects.disintegrate, 500)
 })
 controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Pressed, function () {
     projectile1 = sprites.createProjectileFromSprite(img`
@@ -506,6 +500,15 @@ controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Press
         `, player1, 75, 0)
     projectile1.setFlag(SpriteFlag.AutoDestroy, false)
     projectile1.setFlag(SpriteFlag.DestroyOnWall, true)
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    if (sprite.overlapsWith(otherSprite)) {
+        sprites.destroy(sprite, effects.fire, 500)
+        bossHealth += 1
+        if (info.life() < 4) {
+            damageBoss(boss)
+        }
+    }
 })
 let projectile1: Sprite = null
 let projectile4: Sprite = null
@@ -685,7 +688,6 @@ boss = sprites.create(img`
     ........................................
     ........................................
     `, SpriteKind.Enemy)
-boss.setScale(2, ScaleAnchor.Middle)
 player1 = sprites.create(img`
     ................................
     ..............dddd..............
@@ -767,6 +769,11 @@ splitScreen.cameraFollowSprite(splitScreen.Camera.Camera2, player2)
 info.player1.setLife(5)
 info.player2.setLife(5)
 bossHealth = 0
+game.onUpdate(function () {
+    if (false && false) {
+    	
+    }
+})
 forever(function () {
     if (bossHealth == 20) {
         game.gameOver(true)
@@ -791,12 +798,14 @@ forever(function () {
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, boss, randint(-75, 75), randint(-75, 75))
-    if (projectileBoss.overlapsWith(player1)) {
-        info.changeLifeBy(-1)
+    projectileBoss.setFlag(SpriteFlag.AutoDestroy, false)
+    projectileBoss.setFlag(SpriteFlag.DestroyOnWall, true)
+    if (projectileBoss.overlapsWith(player2)) {
+        info.player2.changeLifeBy(-1)
         sprites.destroy(projectileBoss, effects.ashes, 500)
     }
     if (projectileBoss.overlapsWith(player1)) {
-        info.changeLifeBy(-1)
+        info.player1.changeLifeBy(-1)
         sprites.destroy(projectileBoss, effects.ashes, 500)
     }
 })
