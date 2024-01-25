@@ -22,8 +22,6 @@ controller.player2.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Press
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, player2, 75, 0)
-    projectile2.setFlag(SpriteFlag.DestroyOnWall, true)
-    projectile2.setFlag(SpriteFlag.AutoDestroy, false)
 })
 controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
     if (player1.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0) || player1.tileKindAt(TileDirection.Bottom, sprites.skillmap.islandTile7)) {
@@ -504,8 +502,6 @@ controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Press
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, player1, 75, 0)
-    projectile2.setFlag(SpriteFlag.DestroyOnWall, true)
-    projectile2.setFlag(SpriteFlag.AutoDestroy, false)
 })
 let projectile1: Sprite = null
 let projectile4: Sprite = null
