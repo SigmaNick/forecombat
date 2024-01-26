@@ -21,7 +21,7 @@ controller.player2.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Press
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
-        `, player2, 75, 0)
+        `, player2, projection2x, projectiony)
     projectile2.setFlag(SpriteFlag.AutoDestroy, false)
     projectile2.setFlag(SpriteFlag.DestroyOnWall, true)
 })
@@ -205,6 +205,10 @@ controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
         )
     }
 })
+controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
+    projectionx = -75
+    projectiony += 0
+})
 controller.player2.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
     if (player2.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0) || player2.tileKindAt(TileDirection.Bottom, sprites.skillmap.islandTile7)) {
         jumpPlayer2 = 0
@@ -385,6 +389,14 @@ controller.player2.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
         )
     }
 })
+controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
+    projectionx = 75
+    projectiony += 0
+})
+controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
+    projection2x = 75
+    projection2y += 0
+})
 function damageBoss (sprite: Sprite) {
     list = [2, 1]
     if (bossHealth > 5) {
@@ -473,6 +485,13 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.hazardLava1, function (sp
         game.gameOver(false)
     }
 })
+info.player3.onLifeZero(function () {
+    game.gameOver(true)
+})
+controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
+    projection2x = -75
+    projection2y += 0
+})
 info.player1.onLifeZero(function () {
     sprites.destroy(player1, effects.disintegrate, 500)
 })
@@ -497,7 +516,7 @@ controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Press
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
-        `, player1, 75, 0)
+        `, player1, projectionx, projectiony)
     projectile1.setFlag(SpriteFlag.AutoDestroy, false)
     projectile1.setFlag(SpriteFlag.DestroyOnWall, true)
 })
@@ -505,6 +524,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     if (sprite.overlapsWith(otherSprite)) {
         sprites.destroy(sprite, effects.fire, 500)
         bossHealth += 1
+        info.player3.changeLifeBy(-1)
         if (info.life() < 4) {
             damageBoss(boss)
         }
@@ -516,7 +536,11 @@ let projectileBoss: Sprite = null
 let projectile3: Sprite = null
 let projectile = 0
 let list: number[] = []
+let projection2y = 0
+let projectionx = 0
 let jumpPlayer1 = 0
+let projectiony = 0
+let projection2x = 0
 let projectile2: Sprite = null
 let jumpPlayer2 = 0
 let bossHealth = 0
@@ -768,6 +792,7 @@ splitScreen.cameraFollowSprite(splitScreen.Camera.Camera1, player1)
 splitScreen.cameraFollowSprite(splitScreen.Camera.Camera2, player2)
 info.player1.setLife(5)
 info.player2.setLife(5)
+info.player3.setLife(100)
 bossHealth = 0
 game.onUpdate(function () {
     if (info.player2.life() == 0 && info.player1.life() == 0) {
@@ -775,7 +800,7 @@ game.onUpdate(function () {
     }
 })
 forever(function () {
-    if (bossHealth == 20) {
+    if (bossHealth == 100) {
         game.gameOver(true)
     }
     boss.setVelocity(randint(-25, 25), randint(-25, 25))
