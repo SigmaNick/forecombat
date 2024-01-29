@@ -593,7 +593,7 @@ controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
 })
 function damageBoss (sprite: Sprite) {
     list = [2, 1]
-    if (info.player3.life() < 25) {
+    if (info.player3.life() < 10) {
         for (let index = 0; index < 2; index++) {
             pause(1000)
             if (sprite.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0)) {
@@ -617,6 +617,7 @@ function damageBoss (sprite: Sprite) {
                         . . . . . . . b d b . . . . . . 
                         . . . . . . . . . . . . . . . . 
                         `, projectileBoss, randint(-50, 50), 0)
+                    projectile3.follow(sprite, 15)
                     if (sprite.overlapsWith(projectile3)) {
                         info.changeLifeBy(-2)
                         sprites.destroy(projectile3, effects.ashes, 500)
@@ -641,6 +642,7 @@ function damageBoss (sprite: Sprite) {
                         . . . 2 2 4 4 4 4 4 4 2 2 . . . 
                         . . . . . 2 2 2 2 2 2 . . . . . 
                         `, projectileBoss, randint(25, 25), 0)
+                    projectile4.follow(sprite, 10)
                     if (sprite.overlapsWith(projectile4)) {
                         info.changeLifeBy(-3)
                         sprites.destroy(projectile4, effects.ashes, 500)
@@ -1109,7 +1111,7 @@ splitScreen.cameraFollowSprite(splitScreen.Camera.Camera1, player1)
 splitScreen.cameraFollowSprite(splitScreen.Camera.Camera2, player2)
 info.player1.setLife(5)
 info.player2.setLife(5)
-info.player3.setLife(50)
+info.player3.setLife(20)
 game.onUpdate(function () {
     if (info.player2.life() == 0 && info.player1.life() == 0) {
         game.gameOver(false)
