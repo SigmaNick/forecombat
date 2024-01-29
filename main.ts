@@ -53,6 +53,7 @@ sprites.onOverlap(SpriteKind.projectileBoss, SpriteKind.Player, function (sprite
         . . . . . . . . . . . . . . . . 
         `)) {
         sprites.destroy(projectileBoss, effects.ashes, 500)
+        pause(500)
         info.player1.changeLifeBy(-1)
     }
 })
@@ -256,6 +257,7 @@ sprites.onOverlap(SpriteKind.projectileBoss, SpriteKind.player2, function (sprit
         . . . . . . . . . . . . . . . . 
         `)) {
         sprites.destroy(projectileBoss, effects.ashes, 500)
+        pause(500)
         info.player2.changeLifeBy(-1)
     }
 })
@@ -687,6 +689,7 @@ controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
 })
 info.player1.onLifeZero(function () {
     sprites.destroy(player1, effects.disintegrate, 500)
+    sprites.destroy(projectileBoss)
 })
 info.player2.onLifeZero(function () {
     sprites.destroy(player2, effects.disintegrate, 500)
@@ -716,8 +719,8 @@ controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Press
     pause(500)
 })
 sprites.onOverlap(SpriteKind.projectilePlayer, SpriteKind.projectileBoss, function (sprite, otherSprite) {
-    sprites.destroy(projectile1, effects.disintegrate, 100)
-    sprites.destroy(projectileBoss, effects.disintegrate, 100)
+    sprites.destroy(sprite, effects.disintegrate, 100)
+    sprites.destroy(otherSprite, effects.disintegrate, 100)
 })
 let projectile4: Sprite = null
 let projectile3: Sprite = null
@@ -1139,6 +1142,9 @@ forever(function () {
         projectileBoss.follow(player1, 40)
     } else {
         projectileBoss.follow(player2, 40)
+        if (projectileBoss.overlapsWith(player2)) {
+            sprites.destroy(projectileBoss, effects.ashes, 500)
+        }
     }
     pause(2000)
 })
