@@ -323,7 +323,7 @@ sprites.onOverlap(SpriteKind.projectilePlayer, SpriteKind.Enemy, function (sprit
             info.player3.changeLifeBy(-1)
             sprites.destroy(sprite, effects.ashes, 200)
             if (info.life() < 4) {
-                damageBoss(boss)
+                damageBoss(player1)
             }
         }
     }
@@ -396,7 +396,7 @@ sprites.onOverlap(SpriteKind.PROJECTILE2, SpriteKind.Enemy, function (sprite, ot
             info.player3.changeLifeBy(-1)
             sprites.destroy(sprite, effects.ashes, 200)
             if (info.life() < 4) {
-                damageBoss(boss)
+                damageBoss(player22)
             }
         }
     }
@@ -613,7 +613,7 @@ function damageBoss (player2: Sprite) {
                         . . . . . . c b d b c . . . . . 
                         . . . . . . . b d b . . . . . . 
                         . . . . . . . . . . . . . . . . 
-                        `, projectileBoss2, randint(-50, 50), 0)
+                        `, boss, randint(-50, 50), 0)
                     projectile3.follow(player2, 15)
                     if (player2.overlapsWith(projectile3)) {
                         info.changeLifeBy(-2)
@@ -638,32 +638,13 @@ function damageBoss (player2: Sprite) {
                         . . 2 2 2 2 2 4 4 4 2 2 2 . . . 
                         . . . 2 2 4 4 4 4 4 4 2 2 . . . 
                         . . . . . 2 2 2 2 2 2 . . . . . 
-                        `, projectileBoss2, randint(25, 25), 0)
+                        `, boss, randint(25, 25), 0)
                     projectile4.follow(player2, 10)
                     if (player2.overlapsWith(projectile4)) {
                         info.changeLifeBy(-3)
                         sprites.destroy(projectile4)
                     }
                 }
-            } else {
-                projectileBoss2 = sprites.createProjectileFromSprite(img`
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . 4 4 . . . . . . . 
-                    . . . . . . 4 5 5 4 . . . . . . 
-                    . . . . . . 2 5 5 2 . . . . . . 
-                    . . . . . . . 2 2 . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    `, projectileBoss2, 75, 0)
             }
         }
     }
@@ -984,56 +965,63 @@ scene.setBackgroundImage(img`
     `)
 tiles.setCurrentTilemap(tilemap`level1`)
 let list = [img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . 
+    . . . . . . . e e . 
+    . . . . . . . e e . 
+    . . . . . . 5 5 5 . 
+    . . . . . . 5 5 . . 
+    . . . . . 5 5 5 . . 
+    . . . . 5 5 5 . . . 
+    . . . 5 5 5 . . . . 
+    . 5 5 5 5 . . . . . 
+    . . . . . . . . . . 
     `, img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
+    . . . . . . e e e . . . 
+    . . . . e e 4 5 5 e . . 
+    . . . . 4 5 6 2 7 6 e . 
+    . . . e 6 6 7 2 6 4 4 e 
+    . e 5 6 2 8 8 5 5 5 4 5 
+    . e 5 6 7 8 5 5 4 5 5 5 
+    e 4 5 8 6 5 5 5 5 5 5 5 
+    e 5 c c 5 4 5 5 4 5 5 e 
+    e 5 c c 5 5 5 5 5 5 e . 
+    e 5 e c 4 5 4 5 5 e . . 
+    e 5 e e 5 5 5 4 e . . . 
+    . 4 5 4 5 4 e . . . . . 
     `, img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
+    ...........ccccc66666............
+    ........ccc4444444444666.........
+    ......cc444444444bb4444466.......
+    .....cb4444bb4444b5b444444b......
+    ....eb4444b5b44444b44444444b.....
+    ...ebb44444b4444444444b444446....
+    ..eb6bb444444444bb444b5b444446...
+    ..e6bb5b44444444b5b444b44bb44e...
+    .e66b4b4444444444b4444444b5b44e..
+    .e6bb444444444444444444444bb44e..
+    eb66b44444bb444444444444444444be.
+    eb66bb444b5b44444444bb44444444be.
+    fb666b444bb444444444b5b4444444bf.
+    fcb666b44444444444444bb444444bcf.
+    .fbb6666b44444444444444444444bf..
+    .efbb66666bb4444444444444444bfe..
+    .86fcbb66666bbb44444444444bcc688.
+    8772effcbbbbbbbbbbbbbbbbcfc22778.
+    87722222cccccccccccccccc22226678.
+    f866622222222222222222222276686f.
+    fef866677766667777776667777fffef.
+    fbff877768f86777777666776fffffbf.
+    fbeffeefffeff7766688effeeeefeb6f.
+    f6bfffeffeeeeeeeeeeeeefeeeeebb6e.
+    f66ddfffffeeeffeffeeeeeffeedb46e.
+    .c66ddd4effffffeeeeeffff4ddb46e..
+    .fc6b4dddddddddddddddddddb444ee..
+    ..ff6bb444444444444444444444ee...
+    ....ffbbbb4444444444444444ee.....
+    ......ffebbbbbb44444444eee.......
+    .........fffffffcccccee..........
+    .................................
+    .................................
     `]
 for (let value of tiles.getTilesByType(sprites.swamp.swampTile9)) {
     if (Math.percentChance(50)) {
