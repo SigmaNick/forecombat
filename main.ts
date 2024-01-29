@@ -52,8 +52,7 @@ sprites.onOverlap(SpriteKind.projectileBoss, SpriteKind.Player, function (sprite
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `)) {
-        sprites.destroy(projectileBoss, effects.ashes, 500)
-        pause(500)
+        sprites.destroy(projectileBoss)
         info.player1.changeLifeBy(-1)
     }
 })
@@ -256,8 +255,7 @@ sprites.onOverlap(SpriteKind.projectileBoss, SpriteKind.player2, function (sprit
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `)) {
-        sprites.destroy(projectileBoss, effects.ashes, 500)
-        pause(500)
+        sprites.destroy(projectileBoss)
         info.player2.changeLifeBy(-1)
     }
 })
@@ -332,7 +330,7 @@ sprites.onOverlap(SpriteKind.projectilePlayer, SpriteKind.Enemy, function (sprit
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     prox = -75
-    proy = 10
+    proy = 0
 })
 sprites.onOverlap(SpriteKind.PROJECTILE2, SpriteKind.Enemy, function (sprite, otherSprite) {
     if (projectile2.image.equals(img`
@@ -585,18 +583,18 @@ controller.player2.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
 })
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     prox = 75
-    proy = 10
+    proy = 0
 })
 controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
     pro2x = 75
-    pro2y = 10
+    pro2y = 0
 })
-function damageBoss (sprite: Sprite) {
+function damageBoss (player2: Sprite) {
     list = [2, 1]
-    if (info.player3.life() < 25) {
+    if (info.player3.life() < 10) {
         for (let index = 0; index < 2; index++) {
             pause(1000)
-            if (sprite.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0)) {
+            if (player2.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0)) {
                 projectile = list._pickRandom()
                 if (projectile == 1) {
                     projectile3 = sprites.createProjectileFromSprite(img`
@@ -617,9 +615,10 @@ function damageBoss (sprite: Sprite) {
                         . . . . . . . b d b . . . . . . 
                         . . . . . . . . . . . . . . . . 
                         `, projectileBoss, randint(-50, 50), 0)
-                    if (sprite.overlapsWith(projectile3)) {
+                    projectile3.follow(player2, 15)
+                    if (player2.overlapsWith(projectile3)) {
                         info.changeLifeBy(-2)
-                        sprites.destroy(projectile3, effects.ashes, 500)
+                        sprites.destroy(projectile3)
                     }
                 }
                 if (projectile == 2) {
@@ -641,9 +640,10 @@ function damageBoss (sprite: Sprite) {
                         . . . 2 2 4 4 4 4 4 4 2 2 . . . 
                         . . . . . 2 2 2 2 2 2 . . . . . 
                         `, projectileBoss, randint(25, 25), 0)
-                    if (sprite.overlapsWith(projectile4)) {
+                    projectile4.follow(player2, 10)
+                    if (player2.overlapsWith(projectile4)) {
                         info.changeLifeBy(-3)
-                        sprites.destroy(projectile4, effects.ashes, 500)
+                        sprites.destroy(projectile4)
                     }
                 }
             } else {
@@ -685,7 +685,7 @@ info.player3.onLifeZero(function () {
 })
 controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
     pro2x = -75
-    pro2y = 10
+    pro2y = 0
 })
 info.player1.onLifeZero(function () {
     sprites.destroy(player1, effects.disintegrate, 500)
@@ -1109,7 +1109,7 @@ splitScreen.cameraFollowSprite(splitScreen.Camera.Camera1, player1)
 splitScreen.cameraFollowSprite(splitScreen.Camera.Camera2, player2)
 info.player1.setLife(5)
 info.player2.setLife(5)
-info.player3.setLife(50)
+info.player3.setLife(20)
 game.onUpdate(function () {
     if (info.player2.life() == 0 && info.player1.life() == 0) {
         game.gameOver(false)
@@ -1139,12 +1139,12 @@ forever(function () {
     projectileBoss.setFlag(SpriteFlag.AutoDestroy, false)
     projectileBoss.setFlag(SpriteFlag.DestroyOnWall, true)
     if (info.player1.hasLife()) {
-        projectileBoss.follow(player1, 40)
+        projectileBoss.follow(player1, 30)
     } else {
-        projectileBoss.follow(player2, 40)
+        projectileBoss.follow(player2, 30)
         if (projectileBoss.overlapsWith(player2)) {
-            sprites.destroy(projectileBoss, effects.ashes, 500)
+            sprites.destroy(projectileBoss)
         }
     }
-    pause(2000)
+    pause(4000)
 })
