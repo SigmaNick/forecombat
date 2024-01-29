@@ -27,7 +27,7 @@ controller.player2.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Press
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
-        `, player2, pro2x, pro2y)
+        `, player22, pro2x, pro2y)
     projectile2.setKind(SpriteKind.PROJECTILE2)
     projectile2.setFlag(SpriteFlag.AutoDestroy, false)
     projectile2.setFlag(SpriteFlag.DestroyOnWall, true)
@@ -52,7 +52,7 @@ sprites.onOverlap(SpriteKind.projectileBoss, SpriteKind.Player, function (sprite
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `)) {
-        sprites.destroy(projectileBoss)
+        sprites.destroy(projectileBoss2)
         info.player1.changeLifeBy(-1)
     }
 })
@@ -255,7 +255,7 @@ sprites.onOverlap(SpriteKind.projectileBoss, SpriteKind.player2, function (sprit
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `)) {
-        sprites.destroy(projectileBoss)
+        sprites.destroy(projectileBoss2)
         info.player2.changeLifeBy(-1)
     }
 })
@@ -402,14 +402,14 @@ sprites.onOverlap(SpriteKind.PROJECTILE2, SpriteKind.Enemy, function (sprite, ot
     }
 })
 controller.player2.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
-    if (player2.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0) || player2.tileKindAt(TileDirection.Bottom, sprites.skillmap.islandTile7)) {
+    if (player22.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0) || player22.tileKindAt(TileDirection.Bottom, sprites.skillmap.islandTile7)) {
         jumpPlayer2 = 0
     }
     if (jumpPlayer2 < 2) {
         jumpPlayer2 += 1
-        player2.vy = -150
+        player22.vy = -150
         animation.runImageAnimation(
-        player2,
+        player22,
         [img`
             ................................
             ................................
@@ -590,12 +590,11 @@ controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
     pro2y = 0
 })
 function damageBoss (player2: Sprite) {
-    list = [2, 1]
     if (info.player3.life() < 10) {
         for (let index = 0; index < 2; index++) {
             pause(1000)
             if (player2.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0)) {
-                projectile = list._pickRandom()
+                projectile = randint(1, 2)
                 if (projectile == 1) {
                     projectile3 = sprites.createProjectileFromSprite(img`
                         . . . . . . . . . . . . . . . . 
@@ -614,7 +613,7 @@ function damageBoss (player2: Sprite) {
                         . . . . . . c b d b c . . . . . 
                         . . . . . . . b d b . . . . . . 
                         . . . . . . . . . . . . . . . . 
-                        `, projectileBoss, randint(-50, 50), 0)
+                        `, projectileBoss2, randint(-50, 50), 0)
                     projectile3.follow(player2, 15)
                     if (player2.overlapsWith(projectile3)) {
                         info.changeLifeBy(-2)
@@ -639,7 +638,7 @@ function damageBoss (player2: Sprite) {
                         . . 2 2 2 2 2 4 4 4 2 2 2 . . . 
                         . . . 2 2 4 4 4 4 4 4 2 2 . . . 
                         . . . . . 2 2 2 2 2 2 . . . . . 
-                        `, projectileBoss, randint(25, 25), 0)
+                        `, projectileBoss2, randint(25, 25), 0)
                     projectile4.follow(player2, 10)
                     if (player2.overlapsWith(projectile4)) {
                         info.changeLifeBy(-3)
@@ -647,7 +646,7 @@ function damageBoss (player2: Sprite) {
                     }
                 }
             } else {
-                projectileBoss = sprites.createProjectileFromSprite(img`
+                projectileBoss2 = sprites.createProjectileFromSprite(img`
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
@@ -664,7 +663,7 @@ function damageBoss (player2: Sprite) {
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
                     . . . . . . . . . . . . . . . . 
-                    `, projectileBoss, 75, 0)
+                    `, projectileBoss2, 75, 0)
             }
         }
     }
@@ -689,10 +688,10 @@ controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
 })
 info.player1.onLifeZero(function () {
     sprites.destroy(player1, effects.disintegrate, 500)
-    sprites.destroy(projectileBoss)
+    sprites.destroy(projectileBoss2)
 })
 info.player2.onLifeZero(function () {
-    sprites.destroy(player2, effects.disintegrate, 500)
+    sprites.destroy(player22, effects.disintegrate, 500)
 })
 controller.player1.onButtonEvent(ControllerButton.B, ControllerButtonEvent.Pressed, function () {
     projectile1 = sprites.createProjectileFromSprite(img`
@@ -725,19 +724,19 @@ sprites.onOverlap(SpriteKind.projectilePlayer, SpriteKind.projectileBoss, functi
 let projectile4: Sprite = null
 let projectile3: Sprite = null
 let projectile = 0
-let list: number[] = []
 let proy = 0
 let prox = 0
 let projectile1: Sprite = null
 let jumpPlayer1 = 0
-let projectileBoss: Sprite = null
+let projectileBoss2: Sprite = null
 let pro2y = 0
 let pro2x = 0
 let projectile2: Sprite = null
 let jumpPlayer2 = 0
-let player2: Sprite = null
+let player22: Sprite = null
 let player1: Sprite = null
 let boss: Sprite = null
+let powerup1: Sprite = null
 scene.setBackgroundImage(img`
     66666666666666666666666666666666666666666666666666666666666666666666666666666666fff66666666666666666666666666666666666666666666666666666666666666666666666666666
     66666666666666666666666666666666666666666666666666666666666666666666666666666666fff66666666666666666666666666666666666666666666666666666666666666666666666666666
@@ -984,6 +983,65 @@ scene.setBackgroundImage(img`
     ee88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
     `)
 tiles.setCurrentTilemap(tilemap`level1`)
+let list = [img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `]
+for (let value of tiles.getTilesByType(sprites.swamp.swampTile9)) {
+    if (Math.percentChance(50)) {
+        powerup1 = sprites.create(list._pickRandom(), SpriteKind.Player)
+        tiles.placeOnTile(powerup1, value)
+    }
+    tiles.setTileAt(value, assets.tile`transparency16`)
+}
 boss = sprites.create(img`
     ........................................
     ............fff.........................
@@ -1060,7 +1118,7 @@ player1 = sprites.create(img`
     ................................
     ................................
     `, SpriteKind.Player)
-player2 = sprites.create(img`
+player22 = sprites.create(img`
     ................................
     ................................
     ................................
@@ -1095,18 +1153,18 @@ player2 = sprites.create(img`
     ................................
     `, SpriteKind.player2)
 player1.setPosition(78, 22)
-player2.setPosition(177, 22)
+player22.setPosition(177, 22)
 boss.setPosition(127, 120)
 boss.ay = 20
 player1.ay = 300
-player2.ay = 300
+player22.ay = 300
 controller.player1.moveSprite(player1, 100, 0)
-controller.player2.moveSprite(player2, 100, 0)
+controller.player2.moveSprite(player22, 100, 0)
 splitScreen.setSplitScreenEnabled(true)
 splitScreen.setCameraRegion(splitScreen.Camera.Camera1, splitScreen.CameraRegion.HorizontalTopHalf)
 splitScreen.setCameraRegion(splitScreen.Camera.Camera2, splitScreen.CameraRegion.HorizontalBottomHalf)
 splitScreen.cameraFollowSprite(splitScreen.Camera.Camera1, player1)
-splitScreen.cameraFollowSprite(splitScreen.Camera.Camera2, player2)
+splitScreen.cameraFollowSprite(splitScreen.Camera.Camera2, player22)
 info.player1.setLife(5)
 info.player2.setLife(5)
 info.player3.setLife(20)
@@ -1117,7 +1175,7 @@ game.onUpdate(function () {
 })
 forever(function () {
     boss.setVelocity(randint(-25, 25), randint(-25, 25))
-    projectileBoss = sprites.createProjectileFromSprite(img`
+    projectileBoss2 = sprites.createProjectileFromSprite(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -1135,15 +1193,15 @@ forever(function () {
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
         `, boss, randint(-75, 75), randint(0, 75))
-    projectileBoss.setKind(SpriteKind.projectileBoss)
-    projectileBoss.setFlag(SpriteFlag.AutoDestroy, false)
-    projectileBoss.setFlag(SpriteFlag.DestroyOnWall, true)
+    projectileBoss2.setKind(SpriteKind.projectileBoss)
+    projectileBoss2.setFlag(SpriteFlag.AutoDestroy, false)
+    projectileBoss2.setFlag(SpriteFlag.DestroyOnWall, true)
     if (info.player1.hasLife()) {
-        projectileBoss.follow(player1, 30)
+        projectileBoss2.follow(player1, 30)
     } else {
-        projectileBoss.follow(player2, 30)
-        if (projectileBoss.overlapsWith(player2)) {
-            sprites.destroy(projectileBoss)
+        projectileBoss2.follow(player22, 30)
+        if (projectileBoss2.overlapsWith(player22)) {
+            sprites.destroy(projectileBoss2)
         }
     }
     pause(4000)
