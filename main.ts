@@ -3,6 +3,8 @@ namespace SpriteKind {
     export const projectileBoss = SpriteKind.create()
     export const PROJECTILE2 = SpriteKind.create()
     export const player2 = SpriteKind.create()
+    export const projectile3 = SpriteKind.create()
+    export const projectile4 = SpriteKind.create()
 }
 scene.onHitWall(SpriteKind.Player, function (sprite, location) {
     if (sprite.isHittingTile(CollisionDirection.Top)) {
@@ -236,6 +238,12 @@ controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
         )
     }
 })
+sprites.onOverlap(SpriteKind.projectile4, SpriteKind.Player, function (sprite, otherSprite) {
+    if (otherSprite.overlapsWith(projectile4)) {
+        info.changeLifeBy(-3)
+        sprites.destroy(projectile4)
+    }
+})
 sprites.onOverlap(SpriteKind.projectileBoss, SpriteKind.player2, function (sprite, otherSprite) {
     if (sprite.image.equals(img`
         . . . . . . . . . . . . . . . . 
@@ -399,6 +407,12 @@ sprites.onOverlap(SpriteKind.PROJECTILE2, SpriteKind.Enemy, function (sprite, ot
                 damageBoss(player22)
             }
         }
+    }
+})
+sprites.onOverlap(SpriteKind.projectile3, SpriteKind.Player, function (sprite, otherSprite) {
+    if (otherSprite.overlapsWith(projectile3)) {
+        info.changeLifeBy(-2)
+        sprites.destroy(projectile3)
     }
 })
 controller.player2.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
@@ -589,11 +603,11 @@ controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
     pro2x = 75
     pro2y = 0
 })
-function damageBoss (player2: Sprite) {
+function damageBoss (sprite: Sprite) {
     if (info.player3.life() < 10) {
         for (let index = 0; index < 2; index++) {
             pause(1000)
-            if (player2.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0)) {
+            if (sprite.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0)) {
                 projectile = randint(1, 2)
                 if (projectile == 1) {
                     projectile3 = sprites.createProjectileFromSprite(img`
@@ -613,11 +627,12 @@ function damageBoss (player2: Sprite) {
                         . . . . . . c b d b c . . . . . 
                         . . . . . . . b d b . . . . . . 
                         . . . . . . . . . . . . . . . . 
-                        `, boss, randint(-50, 50), 0)
-                    projectile3.follow(player2, 15)
-                    if (player2.overlapsWith(projectile3)) {
-                        info.changeLifeBy(-2)
-                        sprites.destroy(projectile3)
+                        `, boss, 15, 0)
+                    projectile3.setKind(SpriteKind.projectile3)
+                    if (info.player1.hasLife()) {
+                        projectile3.follow(player1, 15)
+                    } else {
+                        projectile3.follow(player22, 15)
                     }
                 }
                 if (projectile == 2) {
@@ -638,11 +653,12 @@ function damageBoss (player2: Sprite) {
                         . . 2 2 2 2 2 4 4 4 2 2 2 . . . 
                         . . . 2 2 4 4 4 4 4 4 2 2 . . . 
                         . . . . . 2 2 2 2 2 2 . . . . . 
-                        `, boss, randint(25, 25), 0)
-                    projectile4.follow(player2, 10)
-                    if (player2.overlapsWith(projectile4)) {
-                        info.changeLifeBy(-3)
-                        sprites.destroy(projectile4)
+                        `, boss, 10, 0)
+                    projectile4.setKind(SpriteKind.projectile4)
+                    if (info.player1.hasLife()) {
+                        projectile4.follow(player1, 10)
+                    } else {
+                        projectile4.follow(player22, 10)
                     }
                 }
             }
@@ -702,12 +718,12 @@ sprites.onOverlap(SpriteKind.projectilePlayer, SpriteKind.projectileBoss, functi
     sprites.destroy(sprite, effects.disintegrate, 100)
     sprites.destroy(otherSprite, effects.disintegrate, 100)
 })
-let projectile4: Sprite = null
-let projectile3: Sprite = null
 let projectile = 0
+let projectile3: Sprite = null
 let proy = 0
 let prox = 0
 let projectile1: Sprite = null
+let projectile4: Sprite = null
 let jumpPlayer1 = 0
 let projectileBoss2: Sprite = null
 let pro2y = 0
