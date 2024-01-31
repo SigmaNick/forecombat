@@ -5,6 +5,7 @@ namespace SpriteKind {
     export const player2 = SpriteKind.create()
     export const projectile3 = SpriteKind.create()
     export const projectile4 = SpriteKind.create()
+    export const banana = SpriteKind.create()
 }
 scene.onHitWall(SpriteKind.Player, function (sprite, location) {
     if (sprite.isHittingTile(CollisionDirection.Top)) {
@@ -651,6 +652,27 @@ sprites.onOverlap(SpriteKind.projectilePlayer, SpriteKind.projectileBoss, functi
     sprites.destroy(sprite, effects.disintegrate, 100)
     sprites.destroy(otherSprite, effects.disintegrate, 100)
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.banana, function (sprite, otherSprite) {
+    if (powerup1.equals(img`
+        . . . . . . f . . . . . 
+        . . . . . f e f . . . . 
+        . . . . . . f 5 f . . . 
+        . . . . . . f 5 f f . . 
+        . . . . . . f 5 5 f f . 
+        . . . . . . f 5 5 5 f . 
+        . . . . . f f 5 5 5 f . 
+        . . . . f f 5 5 5 5 f . 
+        . . f f 5 5 5 5 5 f f . 
+        . f 5 5 5 5 5 5 f f . . 
+        . f 5 5 5 5 f f f . . . 
+        . . f f f f f . . . . . 
+        `)) {
+        otherSprite.setKind(SpriteKind.banana)
+        if (sprite.overlapsWith(otherSprite)) {
+            projectile1.setVelocity(100, 100)
+        }
+    }
+})
 let projectile = 0
 let projectile3: Sprite = null
 let proy = 0
@@ -668,7 +690,7 @@ let hitProjectile3 = 0
 let player22: Sprite = null
 let player1: Sprite = null
 let boss: Sprite = null
-let powerup1: Sprite = null
+let powerup1: Image = null
 scene.setBackgroundImage(img`
     66666666666666666666666666666666666666666666666666666666666666666666666666666666fff66666666666666666666666666666666666666666666666666666666666666666666666666666
     66666666666666666666666666666666666666666666666666666666666666666666666666666666fff66666666666666666666666666666666666666666666666666666666666666666666666666666
@@ -956,7 +978,7 @@ let list = [img`
     . . f b b b 4 4 4 e . . 
     `]
 for (let value of tiles.getTilesByType(sprites.swamp.swampTile9)) {
-    if (Math.percentChance(50)) {
+    if (Math.percentChance(20)) {
         powerup1 = sprites.create(list._pickRandom(), SpriteKind.Player)
         tiles.placeOnTile(powerup1, value)
     }
