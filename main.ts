@@ -67,6 +67,7 @@ sprites.onOverlap(SpriteKind.projectilePlayer, SpriteKind.projectile3, function 
         hitProjectile4 = 0
     }
 })
+// Used code from teacher's slides
 controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
     if (player1.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0) || player1.tileKindAt(TileDirection.Bottom, sprites.skillmap.islandTile7)) {
         jumpPlayer1 = 0
@@ -346,6 +347,7 @@ sprites.onOverlap(SpriteKind.projectilePlayer, SpriteKind.projectile4, function 
         hitProjectile4 = 0
     }
 })
+// Used code from teacher's slides
 controller.player2.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
     if (player22.tileKindAt(TileDirection.Bottom, sprites.builtin.oceanDepths0) || player22.tileKindAt(TileDirection.Bottom, sprites.skillmap.islandTile7)) {
         jumpPlayer2 = 0
