@@ -6,6 +6,8 @@ namespace SpriteKind {
     export const projectile3 = SpriteKind.create()
     export const projectile4 = SpriteKind.create()
     export const banana = SpriteKind.create()
+    export const tacopastor = SpriteKind.create()
+    export const burger = SpriteKind.create()
 }
 scene.onHitWall(SpriteKind.Player, function (sprite, location) {
     if (sprite.isHittingTile(CollisionDirection.Top)) {
@@ -528,6 +530,13 @@ controller.player2.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
         )
     }
 })
+sprites.onOverlap(SpriteKind.player2, SpriteKind.banana, function (sprite, otherSprite) {
+    otherSprite.setKind(SpriteKind.banana)
+    if (sprite.overlapsWith(otherSprite)) {
+        info.player2.changeLifeBy(2)
+        sprites.destroy(otherSprite)
+    }
+})
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
     prox = 75
     proy = 0
@@ -535,6 +544,13 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.player2.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
     pro2x = 75
     pro2y = 0
+})
+sprites.onOverlap(SpriteKind.player2, SpriteKind.tacopastor, function (sprite, otherSprite) {
+    otherSprite.setKind(SpriteKind.tacopastor)
+    if (sprite.overlapsWith(otherSprite)) {
+        info.player3.changeLifeBy(-3)
+        sprites.destroy(otherSprite)
+    }
 })
 function damageBoss (sprite: Sprite) {
     if (info.player3.life() < 10) {
@@ -619,6 +635,13 @@ controller.player2.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
     pro2x = -75
     pro2y = 0
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.tacopastor, function (sprite, otherSprite) {
+    otherSprite.setKind(SpriteKind.tacopastor)
+    if (sprite.overlapsWith(otherSprite)) {
+        info.player3.changeLifeBy(-3)
+        sprites.destroy(otherSprite)
+    }
+})
 info.player1.onLifeZero(function () {
     sprites.destroy(player1, effects.disintegrate, 500)
     sprites.destroy(projectileBoss2)
@@ -657,7 +680,8 @@ sprites.onOverlap(SpriteKind.projectilePlayer, SpriteKind.projectileBoss, functi
 sprites.onOverlap(SpriteKind.Player, SpriteKind.banana, function (sprite, otherSprite) {
     otherSprite.setKind(SpriteKind.banana)
     if (sprite.overlapsWith(otherSprite)) {
-        projectile1.setVelocity(100, 100)
+        info.player1.changeLifeBy(2)
+        sprites.destroy(otherSprite)
     }
 })
 let projectile = 0
@@ -924,7 +948,7 @@ scene.setBackgroundImage(img`
     ee88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
     `)
 tiles.setCurrentTilemap(tilemap`level1`)
-let list = [img`
+let list = [sprites.create(img`
     . . . . . . f . . . . . 
     . . . . . f e f . . . . 
     . . . . . . f 5 f . . . 
@@ -937,7 +961,7 @@ let list = [img`
     . f 5 5 5 5 5 5 f f . . 
     . f 5 5 5 5 f f f . . . 
     . . f f f f f . . . . . 
-    `, img`
+    `, SpriteKind.banana), sprites.create(img`
     . . . . . . e e e . . . 
     . . . . e e 4 5 5 e . . 
     . . . . 4 5 6 2 7 6 e . 
@@ -950,7 +974,7 @@ let list = [img`
     e 5 e c 4 5 4 5 5 e . . 
     e 5 e e 5 5 5 4 e . . . 
     . 4 5 4 5 4 e . . . . . 
-    `, img`
+    `, SpriteKind.tacopastor), sprites.create(img`
     . . . c 4 4 4 4 6 6 . . 
     . . 4 4 b 4 4 4 4 4 . . 
     . e 4 4 b 4 4 4 b 4 4 . 
@@ -963,10 +987,10 @@ let list = [img`
     c 6 4 f f f e f f f b 6 
     . f 4 4 4 4 4 4 4 4 4 e 
     . . f b b b 4 4 4 e . . 
-    `]
+    `, SpriteKind.burger)]
 for (let value of tiles.getTilesByType(sprites.swamp.swampTile9)) {
-    if (Math.percentChance(20)) {
-        powerup1 = sprites.create(list._pickRandom(), SpriteKind.Player)
+    if (Math.percentChance(50)) {
+        powerup1 = list._pickRandom()
         tiles.placeOnTile(powerup1, value)
     }
     tiles.setTileAt(value, assets.tile`transparency16`)
